@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Twitter Clone</title>
+<style>
+:root{--bg:#fff;--fg:#0f1419;--mut:#536471;--line:#eff3f4;--ac:#1d9bf0;--hov:#f7f9f9;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15202b;--fg:#e7e9ea;--mut:#8b98a5;--line:#38444d;--hov:#1e2732;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15202b;--fg:#e7e9ea;--mut:#8b98a5;--line:#38444d;--hov:#1e2732;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.4 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer;color:inherit}
+.app{max-width:1100px;margin:auto;display:grid;grid-template-columns:240px minmax(0,600px) 1fr;min-height:100vh}
+.ln{position:sticky;top:env(safe-area-inset-top,0px);height:100vh;padding:8px 12px;display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.lg{width:46px;height:46px;border-radius:50%;background:var(--ac);color:#fff;font:800 26px/46px Georgia,serif;text-align:center;margin-bottom:4px}
+.ni{display:flex;align-items:center;gap:16px;padding:10px 16px 10px 12px;border-radius:30px;font-size:19px;background:none;border:0}
+.ni:hover{background:var(--hov)}.ni.on{font-weight:800}
+.ic{position:relative;font-size:22px}.bg{position:absolute;top:-6px;right:-8px;background:var(--ac);color:#fff;font:700 11px/1 sans-serif;border-radius:9px;padding:3px 5px;font-style:normal}
+.btn{border:1px solid var(--line);background:none;border-radius:20px;padding:7px 16px;font-weight:700}
+.pri{background:var(--ac);color:#fff;border-color:var(--ac)}.pri:disabled{opacity:.5;cursor:default}
+.pb{width:100%;padding:13px;font-size:17px;margin-top:10px}
+main{border-left:1px solid var(--line);border-right:1px solid var(--line);min-height:100vh;min-width:0}
+.mh{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:4;padding:14px 16px;font-size:20px;font-weight:800;border-bottom:1px solid var(--line)}
+.tabs{display:flex;border-bottom:1px solid var(--line)}.tabs button{flex:1;background:none;border:0;padding:14px;font-weight:600;color:var(--mut);border-bottom:4px solid transparent}
+.tabs button.on{color:var(--fg);font-weight:800;border-color:var(--ac)}
+.cp{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.cp textarea{width:100%;border:0;background:none;color:var(--fg);font:20px/1.3 inherit;resize:none;outline:0;min-height:56px}
+.cr{display:flex;justify-content:flex-end;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:10px}
+.av{width:44px;height:44px;border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-weight:800;font-size:18px}
+.tw{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);cursor:pointer}.tw:hover{background:var(--hov)}
+.bd{flex:1;min-width:0}.hd{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.hd a:hover b{text-decoration:underline}
+.mt{color:var(--mut)}.tx{white-space:pre-wrap;word-wrap:break-word;margin:2px 0 8px;font-size:16px}.tx a{color:var(--ac)}.tx a:hover{text-decoration:underline}
+.x{margin-left:auto;background:none;border:0;color:var(--mut);font-size:13px}.x:hover{color:#f4212e}
+.ac{display:flex;justify-content:space-between;max-width:380px}
+.ac button{background:none;border:0;color:var(--mut);display:flex;gap:6px;align-items:center;padding:4px 6px;border-radius:16px}
+.ac button:hover{color:var(--ac);background:rgba(29,155,240,.1)}
+.ac .lk.on{color:#f91880}.ac .rt.on{color:#00ba7c}.ac .bm.on{color:var(--ac)}
+.big .tx{font-size:22px}
+.pill{display:block;margin:10px auto;background:var(--ac);color:#fff;border:0;border-radius:20px;padding:8px 18px;font-weight:700}
+.rs{padding:8px 16px;position:sticky;top:env(safe-area-inset-top,0px);height:100vh;overflow:auto}
+.inp{width:100%;border:1px solid var(--line);background:var(--hov);color:var(--fg);border-radius:22px;padding:11px 16px;font:inherit}
+.inp:focus,textarea:focus{outline:2px solid var(--ac)}
+.box{background:var(--hov);border-radius:16px;margin-top:14px;padding:12px 16px}.box h3{margin:0 0 8px;font-size:19px}
+.tr{display:block;padding:8px 0}.tr b{display:block}.tr:hover b{text-decoration:underline}
+.fw{display:flex;gap:10px;align-items:center;padding:8px 0}.fw .av{width:40px;height:40px}.fw .t{flex:1;min-width:0}
+.ban{height:130px}.pr{padding:0 16px 14px;border-bottom:1px solid var(--line)}
+.pr .av{width:84px;height:84px;font-size:34px;margin-top:-42px;border:4px solid var(--bg)}
+.pr .top{display:flex;justify-content:flex-end;margin-top:-34px;min-height:40px}
+.empty{padding:40px 20px;text-align:center;color:var(--mut)}
+.nt{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}.nt.nw{background:rgba(29,155,240,.08)}
+.fm input,.fm textarea{width:100%;margin:6px 0;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:6px;padding:8px;font:inherit}
+#toast{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ac);color:#fff;padding:10px 18px;border-radius:8px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s;z-index:20}#toast.on{opacity:1}
+@media(max-width:1000px){.app{grid-template-columns:76px minmax(0,600px) 1fr}.ni .l,.pb{display:none}.ni{padding:10px 14px}.rs{display:none}}
+@media(max-width:640px){.app{display:block}.ln{position:fixed;bottom:0;top:auto;left:0;right:0;height:auto;flex-direction:row;justify-content:space-around;background:var(--bg);border-top:1px solid var(--line);z-index:6;padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px))}.lg{display:none}.ni{padding:8px 12px}main{border:0;padding-bottom:70px}}
+</style>
+</head>
+<body>
+<div id="root"></div><div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),R=$("#root");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+let mem=null;
+function seed(){const n=Date.now(),m=6e4;return{me:"you",
+users:{you:{name:"You",bio:"Just setting up my profile.",c:"#1d9bf0",f:0},maya:{name:"Maya Chen",bio:"Designer. Coffee first.",c:"#e91e63",f:2310},devon:{name:"Devon Park",bio:"Shipping side projects.",c:"#7c4dff",f:5120},noor:{name:"Noor Ali",bio:"Science writer and stargazer.",c:"#00897b",f:880},jules:{name:"Jules Martin",bio:"Football, food and film.",c:"#f57c00",f:12400},kai:{name:"Kai Tanaka",bio:"Open-source tinkerer.",c:"#5d4037",f:3002},priya:{name:"Priya Nair",bio:"Plant parent. Runner.",c:"#43a047",f:1560}},
+following:["maya","devon","noor"],bm:[],notifs:[],seen:0,
+tweets:[{id:"t1",h:"maya",t:"Good #design is invisible until it breaks. Spent today fixing a button nobody noticed was wrong.",ts:n-5*m,likes:["devon"],rts:[],parent:null},
+{id:"t2",h:"devon",t:"Just merged my first big #opensource PR. Tests green, coffee cold. ☕",ts:n-22*m,likes:["maya","kai"],rts:["kai"],parent:null},
+{id:"t3",h:"noor",t:"Tonight’s sky is clear. Jupiter will be bright after sunset. Go look up! #space",ts:n-65*m,likes:["priya"],rts:[],parent:null},
+{id:"t4",h:"jules",t:"What a match. That last-minute goal will be replayed for years. #football",ts:n-130*m,likes:[],rts:[],parent:null},
+{id:"t5",h:"kai",t:"Hot take: the best code is the code you deleted. #opensource",ts:n-200*m,likes:["devon"],rts:[],parent:null},
+{id:"t6",h:"priya",t:"My monstera grew a new leaf and I have never been prouder. 🌱",ts:n-300*m,likes:["maya","noor"],rts:[],parent:null},
+{id:"t7",h:"devon",t:"@maya totally agree. Invisible wins every time.",ts:n-3*m,likes:[],rts:[],parent:"t1"}]}}
+function load(){try{const v=localStorage.getItem("tw");if(v)return JSON.parse(v)}catch(e){}return mem||seed()}
+let S=load();
+function save(){mem=S;try{localStorage.setItem("tw",JSON.stringify(S))}catch(e){}}
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");setTimeout(()=>e.classList.remove("on"),1800)}
+const ago=ts=>{const s=(Date.now()-ts)/1e3;return s<60?"now":s<3600?Math.floor(s/60)+"m":s<86400?Math.floor(s/3600)+"h":new Date(ts).toLocaleDateString(undefined,{month:"short",day:"numeric"})};
+const lk=t=>esc(t).replace(/#(\w+)/g,'<a href="#tag-$1">#$1</a>').replace(/@(\w+)/g,(m,h)=>S.users[h]?`<a href="#profile-${h}">@${h}</a>`:m);
+const U=h=>S.users[h]||{name:h,c:"#888",bio:"",f:0};
+let tab="fy",q="",draft="",pend=[],editing=false,cd=null;
+function trends(){const c={};S.tweets.forEach(t=>(t.t.match(/#\w+/g)||[]).forEach(x=>c[x.slice(1)]=(c[x.slice(1)]||0)+1));return Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,5)}
+function page(on,title,body){
+  const un=S.notifs.filter(n=>n.ts>S.seen).length;
+  const wf=Object.keys(S.users).filter(h=>h!==S.me&&!S.following.includes(h)).slice(0,3);
+  const nav=[["home","🏠","Home"],["explore","🔍","Explore"],["notifications","🔔","Notifications"],["bookmarks","🔖","Bookmarks"],["profile-"+S.me,"👤","Profile"]];
+  R.innerHTML=`<div class="app"><nav class="ln"><a class="lg" href="#home" aria-label="Home">t</a>${nav.map(([h,i,l])=>`<a href="#${h}" class="ni ${on===h?"on":""}" ${h==="explore"?`onclick="q=''"`:""}><span class="ic">${i}${h==="notifications"?`<i class="bg" id="nb" ${un?"":"hidden"}>${un}</i>`:""}</span><span class="l">${l}</span></a>`).join("")}<button class="btn pri pb" data-act="compose">Post</button><button class="ni" data-act="theme" aria-label="Toggle theme"><span class="ic">🌓</span><span class="l">Theme</span></button></nav>
+  <main><div class="mh">${title}</div>${body}</main>
+  <aside class="rs"><input class="inp" id="sq" placeholder="Search" value="${esc(q)}"><div class="box"><h3>Trends for you</h3>${trends().map(([t,n])=>`<a class="tr" href="#tag-${t}"><b>#${t}</b><span class="mt">${n} post${n>1?"s":""}</span></a>`).join("")||'<span class="mt">Nothing yet</span>'}</div>
+  <div class="box"><h3>Who to follow</h3>${wf.map(fwr).join("")||'<span class="mt">You follow everyone!</span>'}</div></aside></div>`;
+  $("#sq").onkeydown=e=>{if(e.key==="Enter"){q=e.target.value.trim();location.hash==="#explore"?explore():location.hash="explore"}};
+}
+const fwr=h=>{const u=U(h),f=S.following.includes(h);return`<div class="fw"><div class="av" style="background:${u.c}">${u.name[0]}</div><a class="t" href="#profile-${h}"><b>${esc(u.name)}</b><div class="mt">@${h}</div></a><button class="btn ${f?"":"pri"}" data-act="follow" data-id="${h}">${f?"Following":"Follow"}</button></div>`};
+function tw(t,big){
+  const u=U(t.h),rep=S.tweets.filter(x=>x.parent===t.id).length,me=S.me,p=t.parent&&S.tweets.find(x=>x.id===t.parent);
+  return`<article class="tw ${big?"big":""}" data-open="${t.id}"><div class="av" style="background:${u.c}">${esc(u.name[0])}</div><div class="bd"><div class="hd"><a href="#profile-${t.h}"><b>${esc(u.name)}</b> <span class="mt">@${t.h}</span></a><span class="mt">· ${ago(t.ts)}</span>${t.h===me?`<button class="x" data-act="del" data-id="${t.id}">${cd===t.id?"Delete?":"✕"}</button>`:""}</div>${p?`<div class="mt">Replying to @${p.h}</div>`:""}<div class="tx">${lk(t.t)}</div>
+  <div class="ac"><button data-act="reply" data-id="${t.id}" aria-label="Reply">💬 ${rep||""}</button><button class="rt ${t.rts.includes(me)?"on":""}" data-act="rt" data-id="${t.id}" aria-label="Repost">🔁 ${t.rts.length||""}</button><button class="lk ${t.likes.includes(me)?"on":""}" data-act="like" data-id="${t.id}" aria-label="Like">${t.likes.includes(me)?"❤️":"🤍"} ${t.likes.length||""}</button><button class="bm ${S.bm.includes(t.id)?"on":""}" data-act="bm" data-id="${t.id}" aria-label="Bookmark">🔖</button></div></div></article>`;
+}
+function composer(id,ph){const u=U(S.me);return`<div class="cp"><div class="av" style="background:${u.c}">${esc(u.name[0])}</div><div style="flex:1"><textarea id="${id}" rows="2" placeholder="${ph}"></textarea><div class="cr"><span class="mt" id="${id}c">280</span><button class="btn pri" id="${id}b" disabled>${id==="cm"?"Post":"Reply"}</button></div></div></div>`}
+function bindC(id,parent){
+  const ta=$("#"+id);if(!ta)return;const b=$("#"+id+"b"),c=$("#"+id+"c");if(id==="cm")ta.value=draft;
+  const up=()=>{const r=280-ta.value.length;c.textContent=r;c.style.color=r<20?"#f4212e":"";b.disabled=!ta.value.trim()||r<0;if(id==="cm")draft=ta.value};up();ta.oninput=up;
+  b.onclick=()=>{S.tweets.push({id:"t"+Date.now(),h:S.me,t:ta.value.trim(),ts:Date.now(),likes:[],rts:[],parent});if(id==="cm")draft="";save();toast(parent?"Reply posted":"Your post was sent");
+    const pt=parent&&S.tweets.find(x=>x.id===parent);
+    if(pt&&pt.h!==S.me&&Math.random()<.6)setTimeout(()=>{S.tweets.push({id:"t"+Date.now(),h:pt.h,t:rnd(["Thanks for the reply!","Ha, good point.","Appreciate you chiming in.","Interesting take!"]),ts:Date.now(),likes:[],rts:[],parent});S.notifs.push({t:"reply",h:pt.h,id:parent,ts:Date.now()});save();badge()},4000);
+    rr()};
+}
+function updPill(){const p=$("#pill");if(p)p.innerHTML=pend.length?`<button class="pill" data-act="pill">Show ${pend.length} new post${pend.length>1?"s":""}</button>`:""}
+function badge(){const n=S.notifs.filter(x=>x.ts>S.seen).length,b=$("#nb");if(b){b.textContent=n;b.hidden=!n}}
+function home(){
+  const L=S.tweets.filter(t=>!t.parent&&(tab==="fy"||S.following.includes(t.h)||t.h===S.me)).sort((a,b)=>b.ts-a.ts);
+  page("home","Home",`<div class="tabs"><button class="${tab==="fy"?"on":""}" data-act="tab" data-id="fy">For you</button><button class="${tab==="fl"?"on":""}" data-act="tab" data-id="fl">Following</button></div>${composer("cm","What’s happening?")}<div id="pill"></div>${L.map(t=>tw(t)).join("")||'<div class="empty">Nothing here yet. Follow some accounts to fill your timeline.</div>'}`);
+  bindC("cm",null);updPill();
+}
+function xr(){
+  const k=q.toLowerCase();if(!k)return`<div class="box" style="margin:14px"><h3>Trending</h3>${trends().map(([t,n])=>`<a class="tr" href="#tag-${t}"><b>#${t}</b><span class="mt">${n} post${n>1?"s":""}</span></a>`).join("")}</div>`;
+  const us=Object.keys(S.users).filter(h=>(h+U(h).name).toLowerCase().includes(k.replace("@","")));
+  const ts=S.tweets.filter(t=>t.t.toLowerCase().includes(k)).sort((a,b)=>b.ts-a.ts);
+  return(us.length&&!k.startsWith("#")?us.map(h=>`<div style="padding:0 16px;border-bottom:1px solid var(--line)">${fwr(h)}</div>`).join(""):"")+(ts.map(t=>tw(t)).join("")||'<div class="empty">No results for “'+esc(q)+'”. Try another keyword.</div>');
+}
+function explore(){page("explore","Explore",`<div style="padding:12px 16px"><input class="inp" id="xs" placeholder="Search posts and people" value="${esc(q)}"></div><div id="xr">${xr()}</div>`);
+  $("#xs").oninput=e=>{q=e.target.value.trim();$("#xr").innerHTML=xr()}}
+function notifs(){
+  const N=[...S.notifs].sort((a,b)=>b.ts-a.ts),old=S.seen;
+  const txt={like:"liked your post",reply:"replied to your post",follow:"followed you"};
+  page("notifications","Notifications",N.map(n=>{const t=S.tweets.find(x=>x.id===n.id),u=U(n.h);return`<div class="nt ${n.ts>old?"nw":""}"><div class="av" style="background:${u.c}">${esc(u.name[0])}</div><div><a href="#profile-${n.h}"><b>${esc(u.name)}</b></a> ${txt[n.t]} <span class="mt">· ${ago(n.ts)}</span>${t?`<div class="mt"><a href="#tweet-${t.id}">${esc(t.t.slice(0,90))}</a></div>`:""}</div></div>`}).join("")||'<div class="empty">No notifications yet. Post something and check back.</div>');
+  S.seen=Date.now();save();badge();
+}
+function bms(){const L=S.bm.map(id=>S.tweets.find(t=>t.id===id)).filter(Boolean);page("bookmarks","Bookmarks",L.map(t=>tw(t)).join("")||'<div class="empty">Save posts for later with the bookmark button.</div>')}
+function profile(h){
+  const u=S.users[h];if(!u){location.hash="home";return}const me=h===S.me,f=S.following.includes(h);
+  const L=S.tweets.filter(t=>t.h===h).sort((a,b)=>b.ts-a.ts);
+  page(me?"profile-"+h:"","@"+h,`<div class="ban" style="background:linear-gradient(135deg,${u.c},#1d9bf0)"></div><div class="pr"><div class="av" style="background:${u.c}">${esc(u.name[0])}</div><div class="top">${me?`<button class="btn" data-act="edit">${editing?"Cancel":"Edit profile"}</button>`:`<button class="btn ${f?"":"pri"}" data-act="follow" data-id="${h}">${f?"Following":"Follow"}</button>`}</div>
+  ${me&&editing?`<div class="fm"><input id="pn" value="${esc(u.name)}" maxlength="40" aria-label="Name"><textarea id="pbio" rows="2" maxlength="160" aria-label="Bio">${esc(u.bio)}</textarea><button class="btn pri" data-act="saveprof">Save</button></div>`:`<div style="font-size:20px;font-weight:800;margin-top:8px">${esc(u.name)}</div><div class="mt">@${h}</div><p>${esc(u.bio)}</p>`}
+  <div class="mt"><b style="color:var(--fg)">${me?S.following.length:Math.floor(u.f/10)}</b> Following · <b style="color:var(--fg)">${u.f+(f&&!me?1:0)}</b> Followers · <b style="color:var(--fg)">${L.length}</b> Posts</div></div>${L.map(t=>tw(t)).join("")||'<div class="empty">No posts yet.</div>'}`);
+}
+function detail(id){
+  const t=S.tweets.find(x=>x.id===id);if(!t){location.hash="home";return}
+  const p=t.parent&&S.tweets.find(x=>x.id===t.parent),rs=S.tweets.filter(x=>x.parent===id).sort((a,b)=>a.ts-b.ts);
+  page("","Post",`${p?tw(p):""}${tw(t,true)}<div class="mt" style="padding:10px 16px;border-bottom:1px solid var(--line)">${new Date(t.ts).toLocaleString()}</div>${composer("rp","Post your reply")}${rs.map(x=>tw(x)).join("")}`);
+  bindC("rp",id);
+}
+function route(){
+  const h=(location.hash||"#home").slice(1);
+  if(h==="home")home();else if(h==="explore")explore();else if(h.startsWith("tag-")){q="#"+h.slice(4);explore()}
+  else if(h==="notifications")notifs();else if(h==="bookmarks")bms();else if(h.startsWith("profile-"))profile(h.slice(8));
+  else if(h.startsWith("tweet-"))detail(h.slice(6));else home();
+}
+const rr=()=>{const y=scrollY;route();scrollTo(0,y)};
+const flip=(a,x)=>a.includes(x)?a.filter(i=>i!==x):[...a,x];
+function act(k,id){
+  const t=S.tweets.find(x=>x.id===id);
+  if(k==="like"){t.likes=flip(t.likes,S.me)}else if(k==="rt"){t.rts=flip(t.rts,S.me);toast(t.rts.includes(S.me)?"Reposted":"Repost removed")}
+  else if(k==="bm"){S.bm=flip(S.bm,id);toast(S.bm.includes(id)?"Added to bookmarks":"Removed from bookmarks")}
+  else if(k==="del"){if(cd===id){S.tweets=S.tweets.filter(x=>x.id!==id&&x.parent!==id);cd=null;toast("Post deleted")}else{cd=id;rr();return}}
+  else if(k==="reply"){location.hash="tweet-"+id;setTimeout(()=>$("#rp")&&$("#rp").focus(),80);return}
+  else if(k==="follow"){S.following=flip(S.following,id);toast(S.following.includes(id)?"Following @"+id:"Unfollowed @"+id)}
+  else if(k==="tab"){tab=id;home();return}
+  else if(k==="pill"){S.tweets.push(...pend);pend=[]}
+  else if(k==="edit"){editing=!editing;rr();return}
+  else if(k==="saveprof"){const u=S.users[S.me];u.name=$("#pn").value.trim()||u.name;u.bio=$("#pbio").value.trim();editing=false;toast("Profile updated")}
+  else if(k==="compose"){location.hash==="#home"?0:location.hash="home";setTimeout(()=>$("#cm")&&$("#cm").focus(),80);return}
+  else if(k==="theme"){const d=document.documentElement,dk=d.dataset.theme?d.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;d.dataset.theme=dk?"light":"dark";return}
+  save();rr();
+}
+R.addEventListener("click",e=>{
+  const a=e.target.closest("[data-act]");if(a){e.preventDefault();act(a.dataset.act,a.dataset.id);return}
+  if(e.target.closest("a,button,textarea,input"))return;
+  const o=e.target.closest("[data-open]");if(o)location.hash="tweet-"+o.dataset.open;
+});
+window.addEventListener("hashchange",()=>{cd=null;editing=false;route();scrollTo(0,0)});
+const POOL=["Shipping on Fridays is a lifestyle choice. #opensource","New week, new #design experiments.","Reminder: drink water, touch grass.","Anyone else watching the sky tonight? #space","Big game tonight. Who are you backing? #football","Finally fixed that bug. It was a missing comma. #opensource","Slow mornings and strong #coffee.","Hot take: tabs beat spaces. Fight me."];
+setInterval(()=>{
+  const f=S.following.filter(x=>x!==S.me);
+  if(Math.random()<.6&&f.length){pend.push({id:"t"+Date.now()+Math.floor(Math.random()*99),h:rnd(f),t:rnd(POOL),ts:Date.now(),likes:[],rts:[],parent:null});updPill()}
+  else{const mine=S.tweets.filter(t=>t.h===S.me);if(!mine.length)return;const t=rnd(mine),b=rnd(Object.keys(S.users).filter(h=>h!==S.me&&!t.likes.includes(h)));if(!b)return;t.likes.push(b);S.notifs.push({t:"like",h:b,id:t.id,ts:Date.now()});save();badge()}
+},20000);
+route();
+</script>
+</body>
+</html>
